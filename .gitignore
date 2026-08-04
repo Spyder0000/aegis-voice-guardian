@@ -4,3 +4,5 @@ __pycache__/
 node_modules/
 *.pkl
 .DS_Store
+.venv
+*.mp3

@@ -6,12 +6,12 @@
 
 ## Phase 0 — Get Access (do this first, it can take time to provision)
 
-- [ ] Go to `voice.intron.io`, sign in with your account
-- [ ] Find the **Developers** tab/section in your dashboard
-- [ ] Generate/copy your **API key** — treat it like a password, never commit it to GitHub
-- [ ] Confirm whether your account has **Integrator** status — both STT streaming and TTS generate require it
+- [ X] Go to `voice.intron.io`, sign in with your account
+- [ X] Find the **Developers** tab/section in your dashboard
+- [ X] Generate/copy your **API key** — treat it like a password, never commit it to GitHub
+- [ X] Confirm whether your account has **Integrator** status — both STT streaming and TTS generate require it
   - If you only see in-app usage and no API/developer access even with the $1 credit, email `voice@intron.io` right away — this is the team's #1 blocker and it's not something code can fix
-- [ ] Ask about **hackathon credits** — $1 of credit will not cover a 72-hour build; get this sorted before the team burns real money on trial-and-error
+- [ X ] Ask about **hackathon credits** — $1 of credit will not cover a 72-hour build; get this sorted before the team burns real money on trial-and-error
 
 ---
 
@@ -41,23 +41,13 @@ wscat -c "wss://infer.voice.intron.io/stt/v1/stream?sample_rate=16000&bit_rate=1
 | 401 / connection refused | Key wrong or not activated |
 | "Integrator account required" error | Account tier doesn't have streaming STT enabled |
 
-- [ ] Confirm `SESSION_CREATED` received
-- [ ] Send a test `INPUT_AUDIO_CHUNK` message, then `COMMIT`, confirm you get `PARTIAL_TRANSCRIPT` → `COMMITTED_TRANSCRIPT` back
+- [x] Confirm `SESSION_CREATED` received
+- [x] Send a test `INPUT_AUDIO_CHUNK` message, then `COMMIT`, confirm `AUDIO_CHUCK_ACK` received back
 
-### 1d. Test the TTS generate endpoint (curl)
-```bash
-curl --location 'https://infer.voice.intron.io/tts/v1/generate' \
-  --header "Authorization: Bearer $SAHARA_API_KEY" \
-  --header 'Content-Type: application/json' \
-  --data '{
-    "text": "Testing Sahara TTS.",
-    "voice_language": "en",
-    "voice_accent": "nigerian",
-    "voice_gender": "female"
-  }'
-```
-- [ ] Confirm you get back a `200` with an `audio_path`
-- [ ] **Verify the correct `voice_accent` value** at `docs.voice.intron.io/docs/tts/supported-languages-and-accents` — don't assume `"nigerian"` is valid, confirm it
+### 1d. Test the TTS generate endpoint
+- [x] Confirm you get back a `200` with audio content from TTS generate endpoint
+- [x] **Verify the correct `voice` value** for TTS generation
+
 
 ---
 
@@ -327,3 +317,5 @@ voice intake → sahara_asr.transcribe() → entity extraction (amount, recipien
 - [ ] Confirmed valid `voice_accent` values (currently assumed `"nigerian"` — unverified)
 - [ ] Confirmed shape of the TTS `503` poll-status response
 - [ ] Fallback plan if STT sessions can't sustain a realistic call length under the 300s cap
+
+wscat -c "wss://infer.voice.intron.io/stt/v1/stream?sample_rate=16000&bit_rate=16&num_channels=1&use_language_asr_input=en" -H"Authorization: Bearer $env:SAHARA_API_KEY"
