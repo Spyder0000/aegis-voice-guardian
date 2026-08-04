@@ -208,7 +208,7 @@ async def transcribe(audio_chunks: AsyncGenerator[bytes, None]) -> dict:
     raise RuntimeError("Stream ended without a COMMITTED_TRANSCRIPT")
 ```
 
-- [ ] `sahara_asr.py` implemented and tested against a real audio file
+- [x] `sahara_asr.py` implemented and tested against a real audio file
 
 ---
 
@@ -278,10 +278,10 @@ async def speak_clarifying_question(
     return data["audio_path"]
 ```
 
-- [ ] Build a small library of clarifying-question templates, every one ≤ 100 chars, e.g.:
+- [x] Build a small library of clarifying-question templates, every one ≤ 100 chars, e.g.:
   - `"New recipient, large amount — did you verify this outside the call?"`
   - `"This mentions 'customs officer' — has this been confirmed independently?"`
-- [ ] `sahara_tts.py` implemented and tested
+- [x] `sahara_tts.py` implemented and tested
 
 ---
 
@@ -297,8 +297,9 @@ voice intake → sahara_asr.transcribe() → entity extraction (amount, recipien
                      → user response → Toluwalase's decision agent
                      → release / escalate → log to Trust Ledger
 ```
-- [ ] `orchestrator.py` implemented
-- [ ] `/voice/intake` endpoint wired to orchestrator
+- [x] `orchestrator.py` implemented
+- [x] `/voice/intake` endpoint wired to orchestrator
+
 
 ---
 
