@@ -66,7 +66,7 @@ POST /trust/score    → { risk_level, score, reasons }        (Toluwalase's end
 POST /transfers/decision → { status: released | held | escalated }
 ```
 
-- [ ] Contract published and confirmed read by Toluwalase + David
+- [x] Contract published and confirmed read by Toluwalase + David
 
 ---
 

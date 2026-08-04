@@ -44,11 +44,110 @@ Trust Score Agent (rules + XGBoost hybrid)                   ← ml/trust_score/
 | `frontend/src/components/`, `frontend/src/pages/` | David |
 | `backend/app/services/mock_banking_api.py`, `backend/app/db/`, `ml/data/synthetic/`, `infra/` | Darius |
 
-## Data Flow Contract (agree on this before writing code)
-1. `POST /voice/intake` (Agoro) → returns `{transcript, amount, recipient, urgency_flags}`
-2. `POST /trust/score` (Toluwalase) → takes intake payload, returns `{risk_level, score, reasons}`
-3. If `risk_level != LOW`: frontend renders `ConfirmationCard` (David) using the intake payload
-4. `POST /transfers/decision` (Agoro + Toluwalase) → takes user confirmation, returns final status
-5. Every step writes to Trust Ledger (Darius's schema, David's view, Agoro's write calls)
+## Data Flow Contract & API Schemas
 
-Lock this contract on day 1 so all four people can build in parallel against a shared interface instead of waiting on each other.
+### 1. Real-time Audio Stream: `WS /voice/stream`
+- **Direction:** Bidirectional WebSocket (Frontend <-> Backend)
+- **Frontend -> Backend (Audio Chunks):**
+  ```json
+  {
+    "event": "AUDIO_CHUNK",
+    "audio_base64": "<base64_encoded_pcm16_chunk>"
+  }
+  ```
+- **Backend -> Frontend (Transcript Events):**
+  ```json
+  {
+    "event": "PARTIAL_TRANSCRIPT",
+    "text": "Send 50000 naira to"
+  }
+  ```
+  ```json
+  {
+    "event": "COMMITTED_TRANSCRIPT",
+    "text": "Send 50000 naira to Chukwuma now, it is an emergency!",
+    "session_id": "sttstream_12345"
+  }
+  ```
+
+---
+
+### 2. Voice Intake: `POST /voice/intake`
+- **Request Body:**
+  ```json
+  {
+    "transcript": "Send 50000 naira to Chukwuma now, it is an emergency!",
+    "session_id": "sttstream_12345"
+  }
+  ```
+- **Response Payload (200 OK):**
+  ```json
+  {
+    "transcript": "Send 50000 naira to Chukwuma now, it is an emergency!",
+    "amount": 50000.0,
+    "currency": "NGN",
+    "recipient": "Chukwuma",
+    "urgency_flags": ["EMERGENCY_KEYWORD", "HIGH_PRESSURE_TIMING"]
+  }
+  ```
+
+---
+
+### 3. Trust Score Calculation: `POST /trust/score` (Toluwalase's Endpoint)
+- **Request Body:** (Intake payload + User context)
+  ```json
+  {
+    "user_id": "usr_99812",
+    "amount": 50000.0,
+    "recipient": "Chukwuma",
+    "urgency_flags": ["EMERGENCY_KEYWORD", "HIGH_PRESSURE_TIMING"]
+  }
+  ```
+- **Response Payload (200 OK):**
+  ```json
+  {
+    "risk_level": "HIGH",
+    "score": 0.87,
+    "reasons": [
+      "Recipient 'Chukwuma' is a newly added contact",
+      "Amount 50000 NGN exceeds 3-month daily transfer average",
+      "High urgency language detected"
+    ]
+  }
+  ```
+
+---
+
+### 4. Transfer Decision & Execution: `POST /transfers/decision`
+- **Request Body:**
+  ```json
+  {
+    "user_id": "usr_99812",
+    "amount": 50000.0,
+    "recipient": "Chukwuma",
+    "risk_level": "HIGH",
+    "user_confirmation": {
+      "verified_pin": true,
+      "security_question_answer": "Maternal grandmother name verified"
+    }
+  }
+  ```
+- **Response Payload (200 OK):**
+  ```json
+  {
+    "status": "released",  // Options: "released" | "held" | "escalated"
+    "transfer_id": "tx_881923",
+    "ledger_entry_id": "led_44129",
+    "message": "Transfer verified and released to recipient."
+  }
+  ```
+
+---
+
+### End-to-End Workflow & Module Alignment
+1. **Frontend (David)** connects to `WS /voice/stream` for live speech-to-text.
+2. Once speech is committed, **Backend (Agoro)** parses entities via `POST /voice/intake`.
+3. **ML Agent (Toluwalase)** scores the transaction via `POST /trust/score`.
+4. If `risk_level != LOW`: Frontend displays **Confirmation Card** and plays spoken questions via **Sahara TTS** (`/services/sahara_tts.py`).
+5. Final confirmation invokes `POST /transfers/decision` which records the audit trail in **Trust Ledger (Darius)**.
+
