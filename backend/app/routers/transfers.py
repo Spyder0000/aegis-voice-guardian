@@ -5,12 +5,15 @@ Owner: Agoro Oluwatimilehin (routing) + Toluwalase Ajiboye (decision logic)
 Contract:
 POST /transfers/decision -> { status: released | held | escalated, message, transfer_id }
 """
+from datetime import datetime, timezone
 import uuid
-from typing import Optional, Dict, Any
-from fastapi import APIRouter, HTTPException
+from typing import Optional, List
+from fastapi import APIRouter
 from pydantic import BaseModel
 
 router = APIRouter()
+
+LEDGER: List[dict] = []
 
 class ConfirmationData(BaseModel):
     verified_pin: Optional[bool] = False
@@ -21,7 +24,19 @@ class TransferDecisionRequest(BaseModel):
     amount: float
     recipient: str
     risk_level: str
+    transaction_id: Optional[str] = None
+    transcript: Optional[str] = None
+    reasons: Optional[List[str]] = None
     user_confirmation: Optional[ConfirmationData] = None
+
+
+@router.get("/ledger")
+def get_ledger():
+    """
+    Returns the most recent ledger entries first.
+    """
+    return list(LEDGER)
+
 
 @router.post("/decision")
 def transfer_decision(request: TransferDecisionRequest):
@@ -31,26 +46,41 @@ def transfer_decision(request: TransferDecisionRequest):
     transfer_id = f"tx_{uuid.uuid4().hex[:8]}"
     ledger_id = f"led_{uuid.uuid4().hex[:8]}"
 
-    if request.risk_level == "LOW":
-        return {
-            "status": "released",
-            "transfer_id": transfer_id,
-            "ledger_entry_id": ledger_id,
-            "message": "Transfer released successfully."
-        }
+    risk_level = request.risk_level.upper()
+    status = "held"
 
-    # If MEDIUM/HIGH risk, evaluate user confirmation inputs
-    if request.user_confirmation and request.user_confirmation.verified_pin:
-        return {
-            "status": "released",
-            "transfer_id": transfer_id,
-            "ledger_entry_id": ledger_id,
-            "message": "Transfer released following successful user PIN verification."
-        }
-    
+    if risk_level == "LOW":
+        status = "released"
+    elif request.user_confirmation and request.user_confirmation.verified_pin:
+        status = "released"
+    elif request.user_confirmation is not None and not request.user_confirmation.verified_pin:
+        status = "held"
+    elif risk_level == "HIGH":
+        status = "escalated"
+
+    message_map = {
+        "released": "Transfer released successfully.",
+        "held": "Transfer placed on soft hold pending further identity verification.",
+        "escalated": "Transfer escalated for manual review.",
+    }
+
+    ledger_entry = {
+        "id": len(LEDGER) + 1,
+        "transaction_id": request.transaction_id or transfer_id,
+        "transcript": request.transcript,
+        "amount": request.amount,
+        "recipient": request.recipient,
+        "risk_level": risk_level,
+        "reasons": request.reasons or [],
+        "action": status,
+        "created_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+    }
+    LEDGER.insert(0, ledger_entry)
+
     return {
-        "status": "held",
+        "status": status,
         "transfer_id": transfer_id,
         "ledger_entry_id": ledger_id,
-        "message": "Transfer placed on soft hold pending further identity verification."
+        "message": message_map[status],
+        "ledger_entry": ledger_entry,
     }
