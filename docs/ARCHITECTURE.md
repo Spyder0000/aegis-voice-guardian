@@ -151,3 +151,13 @@ Trust Score Agent (rules + XGBoost hybrid)                   ← ml/trust_score/
 4. If `risk_level != LOW`: Frontend displays **Confirmation Card** and plays spoken questions via **Sahara TTS** (`/services/sahara_tts.py`).
 5. Final confirmation invokes `POST /transfers/decision` which records the audit trail in **Trust Ledger (Darius)**.
 
+---
+
+## Benchmark Data Sources & Models
+
+- **Real Code-Switched Audio:** Pulled from Intron's public Afriswitch collection on Hugging Face ([intronhealth/code-switching](https://huggingface.co/collections/intronhealth/code-switching)) via [`ml/data/synthetic/load_afriswitch.py`](file:///mnt/c/Users/USER/Documents/aegis-voice-guardian/ml/data/synthetic/load_afriswitch.py).
+- **Authentication:** No Hugging Face token is needed unless the specific dataset selected turns out to be gated (if gated, pass a token via the `token=` parameter).
+- **Benchmark ASR Models:** The 3 benchmark ASR models are Sahara v2, Whisper large-v3, and Meta MMS (`facebook/mms-1b-all`). Non-ASR text-generation LLMs (e.g., Grok, Llama3) do not qualify for this benchmark since they do not perform audio-to-text transcription.
+- **Excluded Tooling:** Adaption Labs / Adaptive Data / AutoScientist is explicitly not used in this build (text-only input, job-queue time risk).
+
+
