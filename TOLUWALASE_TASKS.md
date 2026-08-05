@@ -201,7 +201,7 @@ if __name__ == "__main__":
     print(score(example, transcript=transcript))
 ```
 
-- [ ] File created, `python rule_based.py` runs and prints a sensible HIGH-risk result for the example scam transcript
+- [x] File created, `python rule_based.py` runs and prints a sensible HIGH-risk result for the example scam transcript
 
 ---
 
@@ -248,8 +248,8 @@ def finalize_decision(risk_level: str, user_confirmed: bool) -> str:
     return "held"  # medium risk, not confirmed — stays on hold pending human review
 ```
 
-- [ ] `decision_agent.py` created
-- [ ] `/trust/score` endpoint wired to `evaluate_transfer()` (coordinate with Agoro on exact request/response format — his `orchestrator.py` calls this)
+- [x] `decision_agent.py` created
+- [x] `/trust/score` endpoint wired to `evaluate_transfer()` (coordinate with Agoro on exact request/response format — his `orchestrator.py` calls this)
 
 ---
 
@@ -337,7 +337,7 @@ if __name__ == "__main__":
     print(run_intervention_benchmark(labeled_calls))
 ```
 
-- [ ] Harness runs against Darius's generated call set
+- [x] Harness runs against Darius's generated call set
 - [ ] False-positive rate and false-negative rate recorded — this is your pitch-deck number
 - [ ] (Optional, if Agoro's ASR is ready) also run transcripts through actual Sahara output vs. the "ground truth" script text to get a real WER number
 

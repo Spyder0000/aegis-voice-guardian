@@ -12,6 +12,9 @@ from pydantic import BaseModel, Field, PositiveFloat
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from ml.trust_score.contract_adapter import score_from_contract
+from ml.trust_score.decision_agent import finalize_decision
+
 from app.db.repository import (
     LedgerConflictError,
     list_ledger_entries,
@@ -50,6 +53,44 @@ class TransferDecisionRequest(BaseModel):
     user_confirmation: ConfirmationData | None = None
 
 
+class EntitiesModel(BaseModel):
+    urgency_phrases: list[str] = Field(default_factory=list)
+    authority_claim: bool = False
+    bank_keywords: list[str] = Field(default_factory=list)
+
+
+class UserProfileModel(BaseModel):
+    average_transfer: float = 0.0
+    largest_transfer: float = 0.0
+    recipient_seen_before: bool = False
+    transfer_count_to_recipient: int = 0
+
+
+class TrustScoreContractRequest(BaseModel):
+    transcript: str | None = None
+    recipient: str | None = None
+    amount: float | None = None
+    currency: str = "NGN"
+    timestamp: str | None = None
+    intent: str | None = None
+    language: str | None = None
+    entities: EntitiesModel = Field(default_factory=EntitiesModel)
+    user_profile: UserProfileModel = Field(default_factory=UserProfileModel)
+
+
+class DecisionFinalizeRequest(BaseModel):
+    risk_level: str | None = None
+    user_confirmed: bool | None = None
+    # Optional transaction fields
+    user_id: str = "usr_default"
+    amount: float | None = None
+    recipient: str | None = None
+    transaction_id: str | None = None
+    transcript: str | None = None
+    reasons: list[str] = Field(default_factory=list)
+    user_confirmation: ConfirmationData | None = None
+
+
 DbSession = Annotated[Session | None, Depends(get_db)]
 
 
@@ -72,40 +113,58 @@ def get_ledger(
         ) from exc
 
 
-@router.post("/decision")
-def transfer_decision(request: TransferDecisionRequest, db: DbSession) -> dict:
-    """Execute the risk decision through the mock bank and record its rationale.
-
-    LOW risk releases immediately. MEDIUM/HIGH risk is held first; a verified
-    confirmation releases it, MEDIUM without verification remains held, and
-    HIGH without verification is escalated for human review.
-    """
-    try:
-        transfer = bank.initiate_transfer(
-            request.amount,
-            request.recipient,
-            user_id=request.user_id,
-            transaction_id=request.transaction_id,
-        )
-        transaction_id = transfer["transaction_id"]
-
-        if request.risk_level is RiskLevel.LOW:
-            transfer = bank.release(transaction_id)
-        else:
-            if transfer["status"] == bank.TransferStatus.PENDING:
-                transfer = bank.soft_hold(transaction_id)
-
-            if request.user_confirmation and request.user_confirmation.verified_pin:
-                transfer = bank.release(transaction_id)
-            elif request.risk_level is RiskLevel.HIGH:
-                transfer = bank.escalate(transaction_id)
-    except bank.BankingError as exc:
+@router.post("/score")
+def compute_trust_score(request: TrustScoreContractRequest) -> dict:
+    """Compute trust score using contract payload schema."""
+    if request.amount is None or request.recipient is None:
         raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=str(exc),
-        ) from exc
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing required field: 'recipient' and 'amount' must be provided.",
+        )
+    payload = request.model_dump()
+    return score_from_contract(payload)
 
-    action = bank.TransferStatus(transfer["status"]).value
+
+@router.post("/decision")
+def transfer_decision(
+    request: DecisionFinalizeRequest,
+    db: DbSession = None,
+) -> dict:
+    """Execute risk decision routing and record rationale to the trust ledger."""
+    if request.risk_level is None or request.user_confirmed is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Missing required field: 'risk_level' and 'user_confirmed' must be provided.",
+        )
+
+    final_status = finalize_decision(request.risk_level, request.user_confirmed)
+
+    amount = float(request.amount or 0.0)
+    recipient = (request.recipient or "N/A").strip()
+    transaction_id = request.transaction_id or f"tx_{uuid.uuid4().hex[:12]}"
+
+    if request.amount is not None and request.recipient is not None:
+        try:
+            transfer = bank.initiate_transfer(
+                request.amount,
+                request.recipient,
+                user_id=request.user_id,
+                transaction_id=transaction_id,
+            )
+            transaction_id = transfer["transaction_id"]
+
+            if final_status == "released":
+                transfer = bank.release(transaction_id)
+            elif final_status == "escalated":
+                transfer = bank.escalate(transaction_id)
+            else:
+                transfer = bank.soft_hold(transaction_id)
+        except bank.BankingError as exc:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=str(exc),
+            ) from exc
+
     ledger_id = f"led_{uuid.uuid4().hex}"
     created_at = datetime.now(timezone.utc)
     ledger_entry = {
@@ -113,30 +172,20 @@ def transfer_decision(request: TransferDecisionRequest, db: DbSession) -> dict:
         "transaction_id": transaction_id,
         "user_id": request.user_id,
         "transcript": request.transcript,
-        "amount": float(request.amount),
-        "recipient": request.recipient.strip(),
-        "risk_level": request.risk_level.value,
+        "amount": amount,
+        "recipient": recipient,
+        "risk_level": request.risk_level,
         "reasons": request.reasons,
-        "action": action,
+        "action": final_status,
         "created_at": created_at,
     }
 
     if db is None:
-        public_entry = next(
-            (
-                existing
-                for existing in _MEMORY_LEDGER
-                if existing["transaction_id"] == transaction_id
-                and existing["action"] == action
-            ),
-            None,
-        )
-        if public_entry is None:
-            public_entry = {
-                **ledger_entry,
-                "created_at": created_at.isoformat().replace("+00:00", "Z"),
-            }
-            _MEMORY_LEDGER.insert(0, public_entry)
+        public_entry = {
+            **ledger_entry,
+            "created_at": created_at.isoformat().replace("+00:00", "Z"),
+        }
+        _MEMORY_LEDGER.insert(0, public_entry)
     else:
         try:
             public_entry = record_ledger_entry(db, ledger_entry)
@@ -150,7 +199,7 @@ def transfer_decision(request: TransferDecisionRequest, db: DbSession) -> dict:
             db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="The bank action completed, but the trust ledger could not be written.",
+                detail="The decision completed, but the trust ledger could not be written.",
             ) from exc
 
     message_map = {
@@ -159,10 +208,10 @@ def transfer_decision(request: TransferDecisionRequest, db: DbSession) -> dict:
         "escalated": "Transfer escalated for manual review.",
     }
     return {
-        "status": action,
+        "status": final_status,
         "transfer_id": transaction_id,
         "ledger_entry_id": public_entry["id"],
-        "message": message_map[action],
+        "message": message_map.get(final_status, "Transfer decision completed."),
         "ledger_entry": public_entry,
     }
 

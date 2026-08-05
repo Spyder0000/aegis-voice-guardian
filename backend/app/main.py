@@ -26,7 +26,7 @@ app.add_middleware(
 )
 
 app.include_router(voice.router, prefix="/voice", tags=["voice"])
-app.include_router(transfers.router, prefix="/transfers", tags=["transfers"])
+app.include_router(transfers.router, prefix="/trust", tags=["trust"])
 
 
 @app.get("/health")
