@@ -66,6 +66,7 @@ URGENCY_PHRASES = [
     "verify your account",
     "package is stuck",
 ]
+ `change this to a txt file or a json file`
 
 # Weights are intentionally simple and interpretable — every point maps to
 # one sentence in the Trust Ledger rationale. Tune thresholds after running
@@ -90,7 +91,7 @@ class TrustScoreInput:
     amount: float
     avg_transfer_amount: float
     hour_of_day: int  # 0-23
-    urgency_phrases: list[str] = field(default_factory=list)
+    urgency_phrases: list[str] = field(default_factory=list) `comming from the file`
 
 
 def _amount_deviation_score(amount: float, avg_amount: float) -> float:
@@ -164,7 +165,7 @@ def score(features: dict, transcript: Optional[str] = None) -> dict:
 
     hour_score = _unusual_hour_score(inp.hour_of_day)
     if hour_score > 0:
-        total += WEIGHTS["unusual_hour"] * hour_score
+        total += WEIGHTS["unusual_hour"] * hour_score 
         reasons.append(f"Unusual transfer time ({inp.hour_of_day}:00)")
 
     urgency = _urgency_score(inp.urgency_phrases)

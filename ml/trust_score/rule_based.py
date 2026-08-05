@@ -44,16 +44,20 @@ Usage:
 
 from dataclasses import dataclass, field
 from typing import Optional
+from pathlib import Path
 
 # Phrases that signal authority-impersonation / urgency pressure.
 # Keep this list growing as Darius's synthetic scam-call scripts get written —
 # every real phrase pattern from those scripts should get added here.
-urgency_phrases_file = 'urgency_phrases.txt'
+# Resolve the phrases file relative to this module so imports succeed
+# regardless of the current working directory.
+urgency_phrases_file = Path(__file__).resolve().parent / 'urgency_phrases.txt'
 
-# Read the urgency phrases from a file 
-# can change this to a json file or a database if needed in the future
-with open(urgency_phrases_file, 'r') as f:
-    URGENCY_PHRASES = f.read().splitlines()
+try:
+    with open(urgency_phrases_file, 'r', encoding='utf-8') as f:
+        URGENCY_PHRASES = f.read().splitlines()
+except FileNotFoundError:
+    URGENCY_PHRASES = []
 
 # Weights are intentionally simple and interpretable — every point maps to
 # one sentence in the Trust Ledger rationale. Tune thresholds after running

@@ -6,8 +6,10 @@ import os
 import sys
 from pathlib import Path
 
-# Ensure backend root directory is in sys.path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+# Ensure repository root directory is in sys.path so sibling packages like
+# `ml` (which lives next to `backend/`) are importable when the backend
+# process starts from anywhere (dev machines, containers, tests).
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
