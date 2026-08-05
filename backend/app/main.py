@@ -3,6 +3,11 @@ AEGIS Voice Guardian — FastAPI entrypoint.
 Owner: Agoro Oluwatimilehin
 """
 import os
+import sys
+from pathlib import Path
+
+# Ensure backend root directory is in sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
