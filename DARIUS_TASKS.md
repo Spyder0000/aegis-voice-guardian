@@ -4,6 +4,19 @@
 
 **Note:** none of your tasks block anyone else — build in whatever order makes sense, but the synthetic call data (Phase 3) is the highest-value thing you can hand off, since Toluwalase can't test or tune her risk scorer without it.
 
+> **Implementation update (2026-08-05):** The code tasks below are complete and
+> covered by automated tests. PostgreSQL schema + seed execution was verified
+> against a temporary local database (1 profile, 2 ledger rows). The generated
+> benchmark contains 20 scam and 20 genuine calls, including new/known-recipient
+> counterexamples for both labels. Docker configuration is structurally validated;
+> the final `docker compose up` smoke test still requires Docker Desktop WSL
+> integration on this workstation. The dataset is ready for Toluwalase, but the
+> external handoff remains a team communication step.
+
+> The code blocks below are the original hackathon baseline. The linked source
+> files are now authoritative and include validation, persistence, idempotency,
+> health checks, and automated tests beyond those starter snippets.
+
 ---
 
 ## Phase 1 — Mock Banking API
@@ -83,8 +96,8 @@ def get_transfer(txn_id: str) -> dict:
     return txn
 ```
 
-- [ ] File created, functions tested with a quick manual script (create a transfer, hold it, release it, check status)
-- [ ] Confirm with Agoro exactly when his orchestrator calls `soft_hold` vs `release` vs `escalate`, so your function names/signatures match what he expects
+- [x] File created, functions tested with a quick manual script (create a transfer, hold it, release it, check status)
+- [x] Calls aligned with the published orchestrator contract: LOW releases; MEDIUM/HIGH soft-hold; verified confirmation releases; unverified HIGH escalates
 
 ---
 
@@ -116,9 +129,9 @@ CREATE TABLE IF NOT EXISTS trust_ledger (
 );
 ```
 
-- [ ] Schema created
-- [ ] Load a few rows of fake data manually to confirm it works (`psql` or any DB tool)
-- [ ] Add a simple `backend/app/db/session.py` with a SQLAlchemy connection if the team wants real persistence instead of David reading from in-memory mock data — check with Agoro whether this is needed for the demo or if mock data is enough
+- [x] Schema created with constraints, indexes, profile statistics, and explainable ledger fields
+- [x] Load fake data and verify it with `psql` (`backend/app/db/seed.sql`)
+- [x] Add SQLAlchemy sessions, models, repository operations, durable ledger writes, and in-memory fallback when `DATABASE_URL` is intentionally absent
 
 ```python
 # backend/app/db/session.py
@@ -241,9 +254,9 @@ if __name__ == "__main__":
     generate()
 ```
 
-- [ ] Fill in the `TODO` sections — aim for 15-20 scam scripts and 15-20 genuine scripts total
-- [ ] Vary language, amounts, and time-of-day so it's a realistic test set, not just copies of the same pattern
-- [ ] Run `python generate_scam_calls.py`, confirm `labeled_calls.json` is created
+- [x] Fill in the dataset — 20 scam scripts and 20 genuine scripts total
+- [x] Vary language, amounts, time-of-day, urgency, category, and recipient familiarity; validate against shortcut-prone label splits
+- [x] Run `python generate_scam_calls.py`, confirm `labeled_calls.json` is created reproducibly
 - [ ] Hand this file to Toluwalase — this directly feeds her benchmark harness
 
 **Optional stretch (only if time allows):** generate actual audio files (text-to-speech) from these scripts so Agoro can test real Sahara ASR transcription accuracy against known ground-truth text, not just test the risk scorer on plain text.
@@ -282,8 +295,8 @@ DATABASE_URL=postgresql://aegis:aegis@localhost:5432/aegis
 BANKING_API_MODE=mock
 ```
 
-- [ ] `docker compose up` successfully starts Postgres + backend
-- [ ] Team can each copy `.env.example` to `.env`, fill in their own `SAHARA_API_KEY`, and run one command to get started
+- [ ] `docker compose up` successfully starts Postgres + backend (blocked locally until Docker Desktop enables WSL integration)
+- [x] Team can copy `.env.example` to `.env`, optionally add `SAHARA_API_KEY`, and run `docker compose --env-file infra/.env -f infra/docker-compose.yml up --build`; transcript-only flows need no paid API key
 
 ---
 

@@ -1,86 +1,172 @@
-"""
-Transfer decision + confirmation endpoints.
-Owner: Agoro Oluwatimilehin (routing) + Toluwalase Ajiboye (decision logic)
+"""Transfer decisions, mock-bank execution, and explainable ledger access."""
 
-Contract:
-POST /transfers/decision -> { status: released | held | escalated, message, transfer_id }
-"""
-from datetime import datetime, timezone
+from __future__ import annotations
+
 import uuid
-from typing import Optional, List
-from fastapi import APIRouter
-from pydantic import BaseModel
+from datetime import datetime, timezone
+from enum import Enum
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from pydantic import BaseModel, Field, PositiveFloat
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
+
+from app.db.repository import (
+    LedgerConflictError,
+    list_ledger_entries,
+    record_ledger_entry,
+)
+from app.db.session import get_db
+from app.services import mock_banking_api as bank
 
 router = APIRouter()
 
-LEDGER: List[dict] = []
+# Used only when DATABASE_URL is intentionally absent (quick local/demo mode).
+_MEMORY_LEDGER: list[dict] = []
+
+
+class RiskLevel(str, Enum):
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+
 
 class ConfirmationData(BaseModel):
-    verified_pin: Optional[bool] = False
-    security_question_answer: Optional[str] = None
+    # This flag represents a result from a mock verification service. A real
+    # deployment must never accept raw PIN material or trust a browser claim.
+    verified_pin: bool = False
+    security_question_answer: str | None = Field(default=None, max_length=256)
+
 
 class TransferDecisionRequest(BaseModel):
-    user_id: str = "usr_default"
-    amount: float
-    recipient: str
-    risk_level: str
-    transaction_id: Optional[str] = None
-    transcript: Optional[str] = None
-    reasons: Optional[List[str]] = None
-    user_confirmation: Optional[ConfirmationData] = None
+    user_id: str = Field(default="usr_default", min_length=1, max_length=128)
+    amount: PositiveFloat
+    recipient: str = Field(min_length=1, max_length=256)
+    risk_level: RiskLevel
+    transaction_id: str | None = Field(default=None, min_length=1, max_length=128)
+    transcript: str | None = Field(default=None, max_length=10_000)
+    reasons: list[str] = Field(default_factory=list, max_length=25)
+    user_confirmation: ConfirmationData | None = None
+
+
+DbSession = Annotated[Session | None, Depends(get_db)]
 
 
 @router.get("/ledger")
-def get_ledger():
-    """
-    Returns the most recent ledger entries first.
-    """
-    return list(LEDGER)
+def get_ledger(
+    db: DbSession,
+    limit: Annotated[int, Query(ge=1, le=500)] = 100,
+) -> list[dict]:
+    """Return the most recent explainable decisions first."""
+    if db is None:
+        return list(_MEMORY_LEDGER[:limit])
+
+    try:
+        return list_ledger_entries(db, limit=limit)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Trust ledger storage is temporarily unavailable.",
+        ) from exc
 
 
 @router.post("/decision")
-def transfer_decision(request: TransferDecisionRequest):
-    """
-    Evaluates final user confirmation and returns execution decision (released | held | escalated).
-    """
-    transfer_id = f"tx_{uuid.uuid4().hex[:8]}"
-    ledger_id = f"led_{uuid.uuid4().hex[:8]}"
+def transfer_decision(request: TransferDecisionRequest, db: DbSession) -> dict:
+    """Execute the risk decision through the mock bank and record its rationale.
 
-    risk_level = request.risk_level.upper()
-    status = "held"
+    LOW risk releases immediately. MEDIUM/HIGH risk is held first; a verified
+    confirmation releases it, MEDIUM without verification remains held, and
+    HIGH without verification is escalated for human review.
+    """
+    try:
+        transfer = bank.initiate_transfer(
+            request.amount,
+            request.recipient,
+            user_id=request.user_id,
+            transaction_id=request.transaction_id,
+        )
+        transaction_id = transfer["transaction_id"]
 
-    if risk_level == "LOW":
-        status = "released"
-    elif request.user_confirmation and request.user_confirmation.verified_pin:
-        status = "released"
-    elif request.user_confirmation is not None and not request.user_confirmation.verified_pin:
-        status = "held"
-    elif risk_level == "HIGH":
-        status = "escalated"
+        if request.risk_level is RiskLevel.LOW:
+            transfer = bank.release(transaction_id)
+        else:
+            if transfer["status"] == bank.TransferStatus.PENDING:
+                transfer = bank.soft_hold(transaction_id)
+
+            if request.user_confirmation and request.user_confirmation.verified_pin:
+                transfer = bank.release(transaction_id)
+            elif request.risk_level is RiskLevel.HIGH:
+                transfer = bank.escalate(transaction_id)
+    except bank.BankingError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+
+    action = bank.TransferStatus(transfer["status"]).value
+    ledger_id = f"led_{uuid.uuid4().hex}"
+    created_at = datetime.now(timezone.utc)
+    ledger_entry = {
+        "id": ledger_id,
+        "transaction_id": transaction_id,
+        "user_id": request.user_id,
+        "transcript": request.transcript,
+        "amount": float(request.amount),
+        "recipient": request.recipient.strip(),
+        "risk_level": request.risk_level.value,
+        "reasons": request.reasons,
+        "action": action,
+        "created_at": created_at,
+    }
+
+    if db is None:
+        public_entry = next(
+            (
+                existing
+                for existing in _MEMORY_LEDGER
+                if existing["transaction_id"] == transaction_id
+                and existing["action"] == action
+            ),
+            None,
+        )
+        if public_entry is None:
+            public_entry = {
+                **ledger_entry,
+                "created_at": created_at.isoformat().replace("+00:00", "Z"),
+            }
+            _MEMORY_LEDGER.insert(0, public_entry)
+    else:
+        try:
+            public_entry = record_ledger_entry(db, ledger_entry)
+        except LedgerConflictError as exc:
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=str(exc),
+            ) from exc
+        except SQLAlchemyError as exc:
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="The bank action completed, but the trust ledger could not be written.",
+            ) from exc
 
     message_map = {
         "released": "Transfer released successfully.",
-        "held": "Transfer placed on soft hold pending further identity verification.",
+        "held": "Transfer remains on soft hold pending identity verification.",
         "escalated": "Transfer escalated for manual review.",
     }
-
-    ledger_entry = {
-        "id": len(LEDGER) + 1,
-        "transaction_id": request.transaction_id or transfer_id,
-        "transcript": request.transcript,
-        "amount": request.amount,
-        "recipient": request.recipient,
-        "risk_level": risk_level,
-        "reasons": request.reasons or [],
-        "action": status,
-        "created_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-    }
-    LEDGER.insert(0, ledger_entry)
-
     return {
-        "status": status,
-        "transfer_id": transfer_id,
-        "ledger_entry_id": ledger_id,
-        "message": message_map[status],
-        "ledger_entry": ledger_entry,
+        "status": action,
+        "transfer_id": transaction_id,
+        "ledger_entry_id": public_entry["id"],
+        "message": message_map[action],
+        "ledger_entry": public_entry,
     }
+
+
+def reset_memory_ledger() -> None:
+    """Clear fallback state for isolated tests."""
+    _MEMORY_LEDGER.clear()

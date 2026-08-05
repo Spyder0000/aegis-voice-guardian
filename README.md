@@ -32,10 +32,29 @@ aegis-voice-guardian/
 └── docs/              # Architecture, assignments, pitch doc
 ```
 
-## Quick Start (once services are stubbed in)
+## Quick Start
+
+Docker Compose starts PostgreSQL, initializes the Trust Profile/Ledger schema,
+loads two demo ledger rows, waits for the database to become healthy, and then
+starts the FastAPI backend.
+
 ```bash
 cp infra/.env.example infra/.env
-docker compose -f infra/docker-compose.yml up --build
+# Add SAHARA_API_KEY to infra/.env for live audio; transcript-only flows work without it.
+docker compose --env-file infra/.env -f infra/docker-compose.yml up --build
+```
+
+Verify the stack at `http://localhost:8000/health` and open the API docs at
+`http://localhost:8000/docs`. PostgreSQL data is kept in a named volume across
+restarts.
+
+Run the backend tests and regenerate the benchmark dataset with:
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r backend/requirements.txt
+.venv/bin/python -m pytest backend/tests -q
+.venv/bin/python ml/data/synthetic/generate_scam_calls.py
 ```
 
 ## Team

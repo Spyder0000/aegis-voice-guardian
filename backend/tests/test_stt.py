@@ -2,8 +2,8 @@ import asyncio
 import base64
 import json
 import os
-import sys
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # Search for .env in current directory or project root
@@ -16,22 +16,21 @@ else:
 try:
     import websockets
 except ImportError:
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "websockets"])
-    import websockets
+    raise RuntimeError("Install backend/requirements.txt before running tests.")
 
-async def test_stt():
+import pytest
+
+
+async def _run_stt_live():
     api_key = os.getenv("SAHARA_API_KEY")
     if not api_key:
-        print("[-] SAHARA_API_KEY environment variable is not set!")
-        print("    Please set it in PowerShell with: $env:SAHARA_API_KEY='your_key'")
-        return
+        raise RuntimeError("SAHARA_API_KEY is required for the live STT test.")
 
     url = "wss://infer.voice.intron.io/stt/v1/stream?sample_rate=16000&bit_rate=16&num_channels=1&use_language_asr_input=en"
     headers = {"Authorization": f"Bearer {api_key}"}
 
-    print(f"[+] 1. Connecting to Intron STT WebSocket...")
-    
+    print("[+] 1. Connecting to Intron STT WebSocket...")
+
     ws = None
     for param in ["additional_headers", "extra_headers", "headers"]:
         try:
@@ -49,20 +48,20 @@ async def test_stt():
         first_msg = await ws.recv()
         session_data = json.loads(first_msg)
         print(f"[+] 2. Received Session Init:\n    {session_data}")
-        
+
         if session_data.get("message_type") != "SESSION_CREATED":
             print(f"[-] Unexpected response: {first_msg}")
             return
 
         # 2. Send 1 second of 16kHz PCM16LE audio
-        dummy_audio = b"\x00" * 32000 
+        dummy_audio = b"\x00" * 32000
         audio_b64 = base64.b64encode(dummy_audio).decode("utf-8")
-        
+
         print("[+] 3. Sending INPUT_AUDIO_CHUNK...")
         chunk_msg = {
             "message_type": "INPUT_AUDIO_CHUNK",
             "audio_base_64": audio_b64,
-            "ack_id": 1
+            "ack_id": 1,
         }
         await ws.send(json.dumps(chunk_msg))
 
@@ -79,13 +78,24 @@ async def test_stt():
                 resp_json = json.loads(response)
                 msg_type = resp_json.get("message_type")
                 print(f"    <- Received [{msg_type}]: {resp_json}")
-                
-                if msg_type in ("COMMITTED_TRANSCRIPT", "AUTHENTICATION_ERROR", "INSUFFICIENT_AUDIO_ACTIVITY"):
+
+                if msg_type in (
+                    "COMMITTED_TRANSCRIPT",
+                    "AUTHENTICATION_ERROR",
+                    "INSUFFICIENT_AUDIO_ACTIVITY",
+                ):
                     break
         except asyncio.TimeoutError:
             print("[+] Finished listening for responses.")
 
     print("[+] STT Phase 1 test complete!")
 
+
+def test_stt():
+    if os.getenv("RUN_LIVE_SAHARA_TESTS") != "1":
+        pytest.skip("Set RUN_LIVE_SAHARA_TESTS=1 to exercise the paid Sahara STT API.")
+    asyncio.run(_run_stt_live())
+
+
 if __name__ == "__main__":
-    asyncio.run(test_stt())
+    asyncio.run(_run_stt_live())

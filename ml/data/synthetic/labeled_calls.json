@@ -1,361 +1,616 @@
 [
   {
-    "transcript": "Send 150000 to this new account for the customs officer, he says my package is stuck and needs it now",
+    "id": "genuine-social-011",
+    "category": "shared_expense",
+    "language": "English",
+    "transcript": "I just met Chika at dinner, send her 5000 naira for my half of the bill",
     "features": {
       "recipient_is_new": true,
-      "amount": 150000,
-      "avg_transfer_amount": 12000,
-      "hour_of_day": 14
+      "amount": 5000,
+      "avg_transfer_amount": 6000,
+      "hour_of_day": 22,
+      "urgency_phrases": []
     },
-    "is_scam": true
+    "is_scam": false
   },
   {
-    "transcript": "This is urgent, my account is frozen, I need to send 80000 right away to unlock it",
+    "id": "scam-sim-017",
+    "category": "account_takeover",
+    "language": "English",
+    "transcript": "Send just 9000 naira to Chinedu again; the caller says this small test will restore my blocked SIM",
     "features": {
-      "recipient_is_new": true,
-      "amount": 80000,
+      "recipient_is_new": false,
+      "amount": 9000,
       "avg_transfer_amount": 15000,
-      "hour_of_day": 23
+      "hour_of_day": 12,
+      "urgency_phrases": [
+        "blocked SIM"
+      ]
     },
     "is_scam": true
   },
   {
-    "transcript": "The police called and said I need to pay a fine immediately or I will lose my license, send 45000 now",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 45000,
-      "avg_transfer_amount": 10000,
-      "hour_of_day": 2
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "My online boyfriend needs 120000 immediately for a flight ticket to come see me, please send it to this account",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 120000,
-      "avg_transfer_amount": 15000,
-      "hour_of_day": 22
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Transfer 250000 right now to this crypto broker, he guaranteed triple returns if I invest within 10 minutes",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 250000,
-      "avg_transfer_amount": 20000,
-      "hour_of_day": 1
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "The hospital called, my brother was in an accident and needs 200000 for emergency surgery immediately",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 200000,
-      "avg_transfer_amount": 25000,
-      "hour_of_day": 3
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Tax office official on line 2 demands 95000 overdue penalty or police will arrest me in one hour",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 95000,
-      "avg_transfer_amount": 18000,
-      "hour_of_day": 16
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Power company agent says power will be cut in 15 minutes unless I pay 35000 directly to his personal wallet",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 35000,
-      "avg_transfer_amount": 8000,
-      "hour_of_day": 21
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "I won 1 million naira lottery, just need to send 50000 processing fee to release the grand prize",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 50000,
-      "avg_transfer_amount": 12000,
-      "hour_of_day": 11
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Microsoft technician detected virus on my laptop, send 65000 right away for security cleanup software",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 65000,
-      "avg_transfer_amount": 10000,
-      "hour_of_day": 20
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Callers claim they kidnapped my cousin, demand 300000 wire transfer before midnight or they hurt him",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 300000,
-      "avg_transfer_amount": 15000,
-      "hour_of_day": 0
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "My boss emailed asking me to send 180000 urgent payment to a new vendor account immediately",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 180000,
-      "avg_transfer_amount": 30000,
-      "hour_of_day": 17
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Landlord says someone else wants the apartment, send 100000 holding deposit right now or I lose the flat",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 100000,
-      "avg_transfer_amount": 25000,
-      "hour_of_day": 19
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Quick loan agent approved 500k loan, pay 40000 collateral security fee first to get disbursement",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 40000,
-      "avg_transfer_amount": 14000,
-      "hour_of_day": 10
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Shopping site over-refunded me by mistake, send back 85000 to this personal account now before legal action",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 85000,
-      "avg_transfer_amount": 12000,
-      "hour_of_day": 15
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Immigration officer says my visa extension has issue, send 110000 fee right away or deportation order issued",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 110000,
-      "avg_transfer_amount": 20000,
-      "hour_of_day": 8
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Car crash caller claims I hit his vehicle, demands 75000 settlement transfer on the spot or calling police",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 75000,
-      "avg_transfer_amount": 15000,
-      "hour_of_day": 22
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Bank security helpline says my main account is compromised, move 400000 to safe holding account immediately",
-    "features": {
-      "recipient_is_new": true,
-      "amount": 400000,
-      "avg_transfer_amount": 35000,
-      "hour_of_day": 2
-    },
-    "is_scam": true
-  },
-  {
-    "transcript": "Send 20000 to my sister for her birthday",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 20000,
-      "avg_transfer_amount": 18000,
-      "hour_of_day": 15
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Pay my usual rent transfer of 45000 to my landlord",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 45000,
-      "avg_transfer_amount": 45000,
-      "hour_of_day": 9
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Transfer 12000 to mama for weekend groceries",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 12000,
-      "avg_transfer_amount": 10000,
-      "hour_of_day": 10
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Pay 8500 electricity utility bill for this month",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 8500,
-      "avg_transfer_amount": 8500,
-      "hour_of_day": 14
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Send 15000 to fiber internet service provider for monthly renewal",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 15000,
-      "avg_transfer_amount": 15000,
-      "hour_of_day": 11
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Pay 60000 for junior school fees second term installment",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 60000,
-      "avg_transfer_amount": 55000,
-      "hour_of_day": 12
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Send 25000 allowance to my mom as usual",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 25000,
-      "avg_transfer_amount": 25000,
-      "hour_of_day": 16
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Pay 18000 mechanic for replacing brake pads on the car",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 18000,
-      "avg_transfer_amount": 15000,
-      "hour_of_day": 17
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Transfer 10000 for monthly gym membership access",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 10000,
-      "avg_transfer_amount": 10000,
-      "hour_of_day": 7
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Send 3500 to Tobi to split team lunch bill from earlier",
+    "id": "genuine-social-010",
+    "category": "shared_expense",
+    "language": "English",
+    "transcript": "Send 3500 naira to Tobi for my share of the team lunch",
     "features": {
       "recipient_is_new": false,
       "amount": 3500,
       "avg_transfer_amount": 5000,
-      "hour_of_day": 13
+      "hour_of_day": 13,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
   {
-    "transcript": "Pay 5000 to Chika for dinner split last night",
+    "id": "scam-hospital-006",
+    "category": "family_emergency",
+    "language": "English",
+    "transcript": "A caller says my brother was in an accident and needs 200000 naira for emergency surgery before they treat him",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 200000,
+      "avg_transfer_amount": 25000,
+      "hour_of_day": 3,
+      "urgency_phrases": [
+        "emergency",
+        "before they treat him"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-refund-015",
+    "category": "refund",
+    "language": "English",
+    "transcript": "A shopping agent says they over-refunded me and I must return 85000 naira to a manager's account today",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 85000,
+      "avg_transfer_amount": 12000,
+      "hour_of_day": 15,
+      "urgency_phrases": [
+        "must",
+        "today"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-romance-004",
+    "category": "romance",
+    "language": "English",
+    "transcript": "My online boyfriend needs 120000 naira immediately for a flight to finally visit me",
     "features": {
       "recipient_is_new": false,
-      "amount": 5000,
-      "avg_transfer_amount": 6000,
-      "hour_of_day": 19
+      "amount": 120000,
+      "avg_transfer_amount": 15000,
+      "hour_of_day": 22,
+      "urgency_phrases": [
+        "immediately"
+      ]
     },
-    "is_scam": false
+    "is_scam": true
   },
   {
-    "transcript": "Send 7500 to salon stylist for hair appointment",
+    "id": "genuine-personal-012",
+    "category": "personal_care",
+    "language": "English",
+    "transcript": "Pay 7500 naira to my saved salon stylist for tomorrow's appointment",
     "features": {
       "recipient_is_new": false,
       "amount": 7500,
       "avg_transfer_amount": 8000,
-      "hour_of_day": 15
+      "hour_of_day": 15,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
   {
-    "transcript": "Pay 35000 to freelance designer for completed logo project",
+    "id": "genuine-family-001",
+    "category": "family",
+    "language": "English",
+    "transcript": "Send 20000 naira to my sister Ada for her birthday gift",
     "features": {
       "recipient_is_new": false,
+      "amount": 20000,
+      "avg_transfer_amount": 18000,
+      "hour_of_day": 15,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "scam-tax-007",
+    "category": "authority_impersonation",
+    "language": "English",
+    "transcript": "The tax office official demands a 95000 naira overdue penalty or police will arrest me in one hour",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 95000,
+      "avg_transfer_amount": 18000,
+      "hour_of_day": 16,
+      "urgency_phrases": [
+        "in one hour",
+        "police"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-safe-account-018",
+    "category": "bank_impersonation",
+    "language": "English",
+    "transcript": "Bank security says move 400000 naira from my account into my existing savings beneficiary before the hackers take it",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 400000,
+      "avg_transfer_amount": 35000,
+      "hour_of_day": 2,
+      "urgency_phrases": [
+        "before the hackers take it"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-loan-014",
+    "category": "advance_fee",
+    "language": "English",
+    "transcript": "The loan agent approved 500000 naira but wants a 40000 naira collateral fee before disbursement",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 40000,
+      "avg_transfer_amount": 14000,
+      "hour_of_day": 10,
+      "urgency_phrases": []
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-utility-008",
+    "category": "utility_impersonation",
+    "language": "English",
+    "transcript": "The power agent says they will disconnect me in fifteen minutes unless I pay 35000 naira to his personal wallet",
+    "features": {
+      "recipient_is_new": true,
       "amount": 35000,
-      "avg_transfer_amount": 30000,
-      "hour_of_day": 18
+      "avg_transfer_amount": 8000,
+      "hour_of_day": 21,
+      "urgency_phrases": [
+        "in fifteen minutes",
+        "unless"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "genuine-utility-004",
+    "category": "utilities",
+    "language": "English",
+    "transcript": "Pay 8500 naira to EKEDC for this month's electricity token",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 8500,
+      "avg_transfer_amount": 8500,
+      "hour_of_day": 14,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
   {
-    "transcript": "Send 4200 to pharmacy for prescription refill",
+    "id": "scam-support-010",
+    "category": "tech_support",
+    "language": "English",
+    "transcript": "The laptop technician says send 65000 naira right away for security software or my files will disappear",
     "features": {
-      "recipient_is_new": false,
-      "amount": 4200,
-      "avg_transfer_amount": 5000,
-      "hour_of_day": 10
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Transfer 50000 into my high yield savings sub account",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 50000,
-      "avg_transfer_amount": 40000,
-      "hour_of_day": 9
-    },
-    "is_scam": false
-  },
-  {
-    "transcript": "Send 12000 deposit to tailor for native wear sewing",
-    "features": {
-      "recipient_is_new": false,
-      "amount": 12000,
+      "recipient_is_new": true,
+      "amount": 65000,
       "avg_transfer_amount": 10000,
-      "hour_of_day": 11
+      "hour_of_day": 20,
+      "urgency_phrases": [
+        "right away"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "genuine-health-007",
+    "category": "health",
+    "language": "English",
+    "transcript": "The clinic needs a 70000 naira deposit before my scheduled surgery tomorrow",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 70000,
+      "avg_transfer_amount": 30000,
+      "hour_of_day": 20,
+      "urgency_phrases": [
+        "before tomorrow"
+      ]
     },
     "is_scam": false
   },
   {
-    "transcript": "Pay 15000 fuel attendant for full tank filling",
+    "id": "genuine-business-019",
+    "category": "small_business",
+    "language": "English",
+    "transcript": "Our freezer failed; urgently pay 180000 naira to the supplier before the morning delivery",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 180000,
+      "avg_transfer_amount": 45000,
+      "hour_of_day": 1,
+      "urgency_phrases": [
+        "urgently",
+        "before the morning delivery"
+      ]
+    },
+    "is_scam": false
+  },
+  {
+    "id": "scam-police-003",
+    "category": "authority_impersonation",
+    "language": "English",
+    "transcript": "The police called and said I must pay a 45000 naira fine immediately or lose my licence",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 45000,
+      "avg_transfer_amount": 10000,
+      "hour_of_day": 2,
+      "urgency_phrases": [
+        "immediately",
+        "police"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "genuine-utility-005",
+    "category": "utilities",
+    "language": "English",
+    "transcript": "Renew my monthly fibre internet with 15000 naira to the saved provider",
     "features": {
       "recipient_is_new": false,
       "amount": 15000,
-      "avg_transfer_amount": 12000,
-      "hour_of_day": 8
+      "avg_transfer_amount": 15000,
+      "hour_of_day": 11,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
   {
-    "transcript": "Send 10000 monthly tithe contribution to church account",
+    "id": "scam-visa-016",
+    "category": "authority_impersonation",
+    "language": "English",
+    "transcript": "An immigration officer says pay a 110000 naira visa correction fee now or face deportation",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 110000,
+      "avg_transfer_amount": 20000,
+      "hour_of_day": 8,
+      "urgency_phrases": [
+        "now",
+        "deportation"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "genuine-family-020",
+    "category": "family",
+    "language": "English",
+    "transcript": "Send 30000 naira now to my son Kunle; he is stranded at the bus terminal",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 30000,
+      "avg_transfer_amount": 22000,
+      "hour_of_day": 23,
+      "urgency_phrases": [
+        "now",
+        "stranded"
+      ]
+    },
+    "is_scam": false
+  },
+  {
+    "id": "genuine-transport-008",
+    "category": "transport",
+    "language": "English",
+    "transcript": "Pay 18000 naira to the new mechanic who replaced my brake pads today",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 18000,
+      "avg_transfer_amount": 15000,
+      "hour_of_day": 17,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "genuine-community-018",
+    "category": "community",
+    "language": "English",
+    "transcript": "Send my regular 10000 naira monthly contribution to the church account",
     "features": {
       "recipient_is_new": false,
       "amount": 10000,
       "avg_transfer_amount": 10000,
-      "hour_of_day": 10
+      "hour_of_day": 10,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "genuine-housing-002",
+    "category": "housing",
+    "language": "English",
+    "transcript": "Pay my usual rent transfer of 45000 naira to Mr Bello",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 45000,
+      "avg_transfer_amount": 45000,
+      "hour_of_day": 9,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "genuine-transport-017",
+    "category": "transport",
+    "language": "English",
+    "transcript": "Pay 15000 naira to the fuel station for filling the delivery van",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 15000,
+      "avg_transfer_amount": 12000,
+      "hour_of_day": 8,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "scam-customs-001",
+    "category": "authority_impersonation",
+    "language": "English",
+    "transcript": "Send 150000 naira to this new account for the customs officer; he says my package is stuck and needs it now",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 150000,
+      "avg_transfer_amount": 12000,
+      "hour_of_day": 14,
+      "urgency_phrases": [
+        "needs it now",
+        "customs officer"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-bank-002",
+    "category": "bank_impersonation",
+    "language": "English",
+    "transcript": "This is urgent, the bank caller says my account is frozen and I must send 80000 naira right away to unlock it",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 80000,
+      "avg_transfer_amount": 15000,
+      "hour_of_day": 23,
+      "urgency_phrases": [
+        "urgent",
+        "right away",
+        "account is frozen"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-rental-013",
+    "category": "rental",
+    "language": "English",
+    "transcript": "The landlord says send a 100000 naira holding deposit right now or another tenant gets the flat",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 100000,
+      "avg_transfer_amount": 25000,
+      "hour_of_day": 19,
+      "urgency_phrases": [
+        "right now"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "genuine-family-003",
+    "category": "family",
+    "language": "Nigerian Pidgin + English",
+    "transcript": "Abeg send 12000 to Mama for weekend market groceries",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 12000,
+      "avg_transfer_amount": 10000,
+      "hour_of_day": 10,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "scam-family-chat-020",
+    "category": "account_takeover",
+    "language": "English",
+    "transcript": "My niece's usual chat account says she needs 15000 naira immediately for an emergency data bundle",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 15000,
+      "avg_transfer_amount": 18000,
+      "hour_of_day": 16,
+      "urgency_phrases": [
+        "immediately",
+        "emergency"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "genuine-health-014",
+    "category": "health",
+    "language": "English",
+    "transcript": "Please send 4200 naira to the pharmacy for my prescription refill",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 4200,
+      "avg_transfer_amount": 5000,
+      "hour_of_day": 10,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "genuine-school-006",
+    "category": "education",
+    "language": "English",
+    "transcript": "Send 60000 naira to Greenfield School for the second-term instalment",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 60000,
+      "avg_transfer_amount": 55000,
+      "hour_of_day": 12,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "genuine-clothing-016",
+    "category": "small_business",
+    "language": "English",
+    "transcript": "Send a 12000 naira deposit to the new tailor for my native wear",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 12000,
+      "avg_transfer_amount": 10000,
+      "hour_of_day": 11,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "scam-crypto-005",
+    "category": "investment",
+    "language": "English",
+    "transcript": "Transfer 250000 naira now to this crypto broker; he guaranteed triple returns if I invest within ten minutes",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 250000,
+      "avg_transfer_amount": 20000,
+      "hour_of_day": 13,
+      "urgency_phrases": [
+        "now",
+        "within ten minutes"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-boss-012",
+    "category": "business_email_compromise",
+    "language": "English",
+    "transcript": "My boss sent a voice note asking for an urgent 180000 naira payment to our usual supplier account",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 180000,
+      "avg_transfer_amount": 30000,
+      "hour_of_day": 17,
+      "urgency_phrases": [
+        "urgent"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-marketplace-019",
+    "category": "marketplace",
+    "language": "English",
+    "transcript": "The seller will reserve the phone only if I transfer 25000 naira in the next five minutes outside the marketplace",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 25000,
+      "avg_transfer_amount": 22000,
+      "hour_of_day": 14,
+      "urgency_phrases": [
+        "next five minutes"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "genuine-subscription-009",
+    "category": "subscription",
+    "language": "English",
+    "transcript": "Transfer 10000 naira for my regular gym membership",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 10000,
+      "avg_transfer_amount": 10000,
+      "hour_of_day": 7,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "genuine-savings-015",
+    "category": "savings",
+    "language": "English",
+    "transcript": "Move 250000 naira into my verified high-yield savings account",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 250000,
+      "avg_transfer_amount": 40000,
+      "hour_of_day": 9,
+      "urgency_phrases": []
+    },
+    "is_scam": false
+  },
+  {
+    "id": "scam-kidnap-011",
+    "category": "extortion",
+    "language": "English",
+    "transcript": "The caller claims he kidnapped my cousin and demands 300000 naira before midnight",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 300000,
+      "avg_transfer_amount": 15000,
+      "hour_of_day": 0,
+      "urgency_phrases": [
+        "before midnight"
+      ]
+    },
+    "is_scam": true
+  },
+  {
+    "id": "scam-prize-009",
+    "category": "advance_fee",
+    "language": "English",
+    "transcript": "They say I won one million naira and only need a 50000 naira processing fee to release the prize",
+    "features": {
+      "recipient_is_new": true,
+      "amount": 50000,
+      "avg_transfer_amount": 12000,
+      "hour_of_day": 11,
+      "urgency_phrases": []
+    },
+    "is_scam": true
+  },
+  {
+    "id": "genuine-business-013",
+    "category": "small_business",
+    "language": "English",
+    "transcript": "Pay 35000 naira to our freelance designer for the completed logo",
+    "features": {
+      "recipient_is_new": false,
+      "amount": 35000,
+      "avg_transfer_amount": 30000,
+      "hour_of_day": 18,
+      "urgency_phrases": []
     },
     "is_scam": false
   }
