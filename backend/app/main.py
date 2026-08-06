@@ -6,14 +6,17 @@ import os
 import sys
 from pathlib import Path
 
-# Ensure repository root directory is in sys.path so sibling packages like
-# `ml` (which lives next to `backend/`) are importable when the backend
-# process starts from anywhere (dev machines, containers, tests).
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import voice, transfers
+
 
 app = FastAPI(title="AEGIS Voice Guardian")
 

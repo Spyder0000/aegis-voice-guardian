@@ -57,10 +57,11 @@ class SaharaSTTSession:
         # Multi-version websockets connection handling
         for param in ["additional_headers", "extra_headers", "headers"]:
             try:
-                self.ws = await websockets.connect(url, **{param: headers})
+                self.ws = await websockets.connect(url, compression=None, **{param: headers})
                 break
             except TypeError:
                 continue
+
 
         if not self.ws:
             raise RuntimeError("Failed to establish WebSocket connection to Sahara STT server.")

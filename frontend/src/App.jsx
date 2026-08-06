@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import LandingPage from "./pages/LandingPage";
+import Landing from "./pages/Landing";
+
+function LandingWrapper() {
+  const navigate = useNavigate();
+  return <Landing onOpenDashboard={() => navigate("/dashboard")} />;
+}
+
+function DashboardWrapper() {
+  const navigate = useNavigate();
+  return <Dashboard onBackHome={() => navigate("/")} />;
+}
 
 export default function App() {
-  const [view, setView] = useState("landing");
-
-  if (view === "dashboard") {
-    return <Dashboard onBackHome={() => setView("landing")} />;
-  }
-
-  return <LandingPage onOpenDashboard={() => setView("dashboard")} />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingWrapper />} />
+        <Route path="/dashboard" element={<DashboardWrapper />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }

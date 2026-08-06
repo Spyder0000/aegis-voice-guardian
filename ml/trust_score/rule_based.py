@@ -63,7 +63,7 @@ except FileNotFoundError:
 # one sentence in the Trust Ledger rationale. Tune thresholds after running
 # the first batch of scripted scam vs. genuine calls (Phase 3 below).
 WEIGHTS = {
-    "new_recipient": 0.30,
+    "new_recipient": 0.15,
     "amount_deviation": 0.30,  # scaled 0-1 based on how far above average
     "unusual_hour": 0.10,      # e.g., very late night
     "urgency_language": 0.40,  # scaled by number of phrase hits, capped

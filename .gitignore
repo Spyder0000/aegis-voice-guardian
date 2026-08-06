@@ -1,9 +1,57 @@
+# Python & Virtual Environments
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+ENV/
+env/
+
+# Environment & Secrets
 .env
+.env.local
+.env.*.local
+
+# Node & Frontend Build
 node_modules/
 frontend/build/
-*.pkl
-.DS_Store
-.venv
+frontend/dist/
+.npm/
+
+# Large Audio & Dataset Files
+*.wav
 *.mp3
+*.ogg
+*.flac
+*.m4a
+*.aac
+*.wma
+afriswitch_clips/
+ml/data/synthetic/*.wav
+ml/data/raw/
+
+# Model Weights & Large Binary Files
+*.pkl
+*.bin
+*.onnx
+*.pth
+*.pt
+*.h5
+*.tar
+*.tar.gz
+*.zip
+
+# System & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs & Cache
+*.log
+coverage/
+.pytest_cache/
+

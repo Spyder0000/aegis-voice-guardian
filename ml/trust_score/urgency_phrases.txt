@@ -1,10 +1,12 @@
-    "customs officer",
-    "needs it now",
-    "your account is frozen",
-    "urgent",
-    "right away",
-    "police",
-    "immediately",
-    "or you will lose",
-    "verify your account",
-    "package is stuck",
+customs officer
+your account is frozen
+needs it now
+right away
+police
+or you will lose
+verify your account
+package is stuck
+suspended your account
+this is your last warning
+emergency
+blocked sim
