@@ -56,3 +56,4 @@ coverage/
 .pytest_cache/
 
 docs/pdf_pages/
+docs/sub_pdf_pages/
