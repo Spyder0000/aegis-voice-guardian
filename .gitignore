@@ -55,3 +55,4 @@ Thumbs.db
 coverage/
 .pytest_cache/
 
+docs/pdf_pages/

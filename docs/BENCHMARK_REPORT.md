@@ -26,6 +26,8 @@ Standard ASR accuracy metric — lower is better. Evaluated on 5 Afriswitch audi
 | **Whisper large-v3** | **51.02%** | **26.71%** | **5 / 5** | **0** | ~0.04 sec/clip | **0.00% Numeric WER** on clip_1 & clip_4; **73.53% WER** on clip_0 & **48.69% WER** on clip_1; strong on long monologue turns |
 | **Meta MMS-1B** | *Not Executed* | *Not Executed* | 0 | 5 | N/A | Future baseline |
 
+![WER Comparison](charts/wer_comparison.png){width=90%}
+
 > **Impact of Methodology Refinements:**
 > 1. **Metadata Stripping:** Stripping non-spoken timestamp headers (`00:02:00`) and speaker markers (`[Speaker 1]:`) reduced Sahara's overall WER from **73.27%** down to **61.01%** (and **24.61%** on clip_1).
 > 2. **Number Normalization:** Previously, transcribing "sixty five" as words instead of digits ("65") was penalized as a 100% numeric error. Fixing the `word2number` span-matching logic to combine multi-word numbers ("sixty five" $\rightarrow$ "65") brought Sahara's Numeric WER down from **99.82%** (raw) $\rightarrow$ **68.07%** (final), achieving **0.00% Numeric WER** on clip_1.
@@ -36,6 +38,8 @@ Standard ASR accuracy metric — lower is better. Evaluated on 5 Afriswitch audi
 
 
 
+\newpage
+
 ### 2. Downstream Risk Scorer Accuracy (Rule-Based Baseline)
 Evaluated on our 40-call benchmark dataset (`labeled_calls.json`), with live keyword extraction via `extract_urgency_phrases()` using `urgency_phrases.txt`:
 
@@ -45,6 +49,8 @@ Evaluated on our 40-call benchmark dataset (`labeled_calls.json`), with live key
 | **False Positive Rate** | **15.0%** (3 / 20) | Genuine transfers soft-held for confirmation |
 | **False Negative Rate** | **15.0%** (3 / 20) | Scam transfers missed (soft-hold not triggered) |
 | **Overall Accuracy** | **85.0%** (34 / 40) | Correct risk assessment |
+
+![Downstream Risk Scorer Accuracy](charts/risk_scorer_accuracy.png){width=90%}
 
 #### Diagnostic Breakdown of False Positives & False Negatives:
 1. **False Positives (3 genuine calls flagged):**
