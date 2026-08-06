@@ -24,7 +24,7 @@
 | Check | Status | Evidence / Where it lives | Gap to close |
 |---|---|---|---|
 | Benchmark uses real code-switched audio (not just English) | ✅ | Intron Afriswitch dataset (`afriswitch_clips/`) | Evaluated on 5 real Nigerian code-switched clinical dialogue clips. |
-| At least 2 language pairs tested | ✅ | English/Pidgin and English/Yoruba dialogue clips | Evaluated in `afriswitch_clips/`. |
+| At least 2 language pairs tested | ✅ | English/Hausa and English/Isoko code-switched dialogue clips | Evaluated in `afriswitch_clips/`. |
 | Code-switch-specific WER reported separately from overall WER | ✅ | [`docs/BENCHMARK_REPORT.md`](file:///mnt/c/Users/USER/Documents/aegis-voice-guardian/docs/BENCHMARK_REPORT.md) | Reported 24.61% WER on `clip_1` & 43.14% WER on `clip_0`. |
 | Scripted scam/genuine calls test dataset | ✅ | `ml/data/synthetic/labeled_calls.json` (40 benchmark calls) | 40 calls evaluated via live keyword extraction. |
 | Sahara's code-switching strength demonstrated as differentiator | ✅ | [`docs/BENCHMARK_REPORT.md`](file:///mnt/c/Users/USER/Documents/aegis-voice-guardian/docs/BENCHMARK_REPORT.md) | Outperforms Whisper large-v3 by up to 2x on dialogue turns (`clip_0` & `clip_1`). |

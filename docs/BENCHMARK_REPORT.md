@@ -11,7 +11,7 @@
 | **Meta MMS (`facebook/mms-1b-all`)** | Open-source, regional | *Not Executed* (Future baseline integration) |
 
 ## Test Data
-- **Source:** [Intron's open code-switching benchmark collection](https://huggingface.co/collections/intronhealth/code-switching) — specifically the **Intron Afriswitch** dataset (natural code-switching across 12+ African languages), sampled for English/Pidgin and English/Yoruba dialogue clips.
+- **Source:** [Intron's open code-switching benchmark collection](https://huggingface.co/collections/intronhealth/code-switching) — specifically the **Intron Afriswitch** dataset (natural code-switching across 12+ African languages), sampled for English/Hausa and English/Isoko code-switched dialogue clips.
 - **Supplemented with:** synthetic scam vs. genuine transfer call dataset (`ml/data/synthetic/labeled_calls.json`), containing 40 total calls (20 genuine, 20 scam) designed to test specific fintech risk signals.
 - **Sample size:** 5 real code-switched Afriswitch audio clips for ASR WER benchmarking + 40 labeled calls for downstream risk scoring.
 

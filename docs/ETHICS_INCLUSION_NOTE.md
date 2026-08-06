@@ -15,7 +15,7 @@
 - **Every decision is logged and explainable.** The Trust Ledger records the specific reasons behind every hold, question, and outcome — this is designed so both the customer and any human reviewer can see exactly why the system intervened, rather than trusting an opaque score.
 
 ## Inclusion
-- The system is designed around Nigerian-accented English and code-switching (English/Pidgin, English/Yoruba) specifically because most fraud-detection tooling is built and tuned on non-African speech data, which produces exactly the kind of false negatives (missed scam language) or false positives (unnecessary friction for genuine customers) this project is trying to avoid.
+- The system is designed around Nigerian-accented English and code-switching (English/Hausa, English/Isoko) specifically because most fraud-detection tooling is built and tuned on non-African speech data, which produces exactly the kind of false negatives (missed scam language) or false positives (unnecessary friction for genuine customers) this project is trying to avoid.
 - Sahara's strength on African accents and numeric precision was the deciding factor in the architecture — using a global-only model here would systematically underserve the target population this tool is meant to protect.
 
 ## Known Limitations (disclosed, not hidden)
