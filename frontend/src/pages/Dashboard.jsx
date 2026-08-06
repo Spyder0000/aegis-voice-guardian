@@ -87,6 +87,7 @@ export default function Dashboard({ onBackHome }) {
   }
 
   async function postDecision(payload) {
+    console.log("Sending payload to /trust/decision:", payload);
     const response = await fetch(`${API_BASE}/trust/decision`, {
       method: "POST",
       headers: {
@@ -96,13 +97,15 @@ export default function Dashboard({ onBackHome }) {
     });
 
     if (!response.ok) {
-      throw new Error("Decision endpoint unavailable");
+      const errText = await response.text();
+      console.error("POST /trust/decision failed:", response.status, errText);
+      throw new Error(`Decision endpoint returned status ${response.status}: ${errText}`);
     }
 
     return response.json();
   }
 
-  // --- Real MediaRecorder Audio Capture ---
+  // --- Real MediaRecorder Audio Capture with Fallback for Demo ---
   async function toggleRecording() {
     if (isListening) {
       // Stop recording
@@ -121,7 +124,7 @@ export default function Dashboard({ onBackHome }) {
         mediaStreamRef.current = stream;
         audioChunksRef.current = [];
 
-        const recorder = new MediaRecorder(stream);
+        const recorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
         mediaRecorderRef.current = recorder;
 
         recorder.ondataavailable = (event) => {
@@ -140,7 +143,7 @@ export default function Dashboard({ onBackHome }) {
         setStatusMessage("Listening... Speak your transfer request, then click Stop Speaking.");
       } catch (err) {
         console.error("Microphone access error:", err);
-        setStatusMessage("Could not access microphone. You can still type or use the example transfer.");
+        setStatusMessage("Could not access microphone. Using example transfer.");
         setIsListening(false);
       }
     }
@@ -151,7 +154,7 @@ export default function Dashboard({ onBackHome }) {
     if (typeof transcriptVal !== "string") {
       transcriptVal = "";
     }
-    const textTranscript = transcriptVal.trim();
+    const textTranscript = transcriptVal.trim() || SAMPLE_TRANSCRIPT;
 
     setIsAnalyzing(true);
     setStatusMessage("Analyzing request through backend trust evaluation engine...");
@@ -161,9 +164,8 @@ export default function Dashboard({ onBackHome }) {
       if (audioBlob) {
         const formData = new FormData();
         formData.append("file", audioBlob, "recording.webm");
-        if (textTranscript) {
-          formData.append("transcript", textTranscript);
-        }
+        formData.append("transcript", textTranscript);
+
         response = await fetch(`${API_BASE}/voice/intake`, {
           method: "POST",
           body: formData,
@@ -178,11 +180,16 @@ export default function Dashboard({ onBackHome }) {
         });
       }
 
+      console.log("Raw /voice/intake response status:", response.status);
       if (!response.ok) {
+        const errText = await response.text();
+        console.error("POST /voice/intake error:", response.status, errText);
         throw new Error("Voice intake failed");
       }
 
       const data = await response.json();
+      console.log("Raw /voice/intake response payload:", data);
+
       const risk = data.risk_evaluation || {};
       const riskLevel = (data.risk_level || risk.risk_level || "LOW").toUpperCase();
 
@@ -192,6 +199,7 @@ export default function Dashboard({ onBackHome }) {
           amount: data.amount || 15000,
           recipient: data.recipient || "Trusted Recipient",
           risk_level: riskLevel,
+          user_confirmed: true,
           transcript: data.transcript || textTranscript,
           reasons: data.reasons || risk.reasons || ["Low risk pattern"],
           user_confirmation: { verified_pin: true },
@@ -257,10 +265,11 @@ export default function Dashboard({ onBackHome }) {
     try {
       const result = await postDecision({
         user_id: "usr_sample",
-        transaction_id: transactionId,
+        transaction_id: transactionId || pendingTransfer.transaction_id,
         amount: pendingTransfer.amount,
         recipient: pendingTransfer.recipient,
-        risk_level: pendingTransfer.risk_level,
+        risk_level: pendingTransfer.risk_level || "HIGH",
+        user_confirmed: true,
         transcript: pendingTransfer.transcript,
         reasons: pendingTransfer.reasons,
         user_confirmation: { verified_pin: pin.length >= 4 },
@@ -276,6 +285,7 @@ export default function Dashboard({ onBackHome }) {
       setLastDecision({ tone: "success", text: "Transfer released after PIN confirmation." });
       setStatusMessage(result.message || "Decision recorded by backend. Ledger updated.");
     } catch (error) {
+      console.error("handleConfirm error:", error);
       setStatusMessage("Could not post confirmation to backend.");
     }
   }
@@ -291,7 +301,8 @@ export default function Dashboard({ onBackHome }) {
         transaction_id: pendingTransfer.transaction_id,
         amount: pendingTransfer.amount,
         recipient: pendingTransfer.recipient,
-        risk_level: pendingTransfer.risk_level,
+        risk_level: pendingTransfer.risk_level || "HIGH",
+        user_confirmed: false,
         transcript: pendingTransfer.transcript,
         reasons: pendingTransfer.reasons,
         user_confirmation: { verified_pin: false },
@@ -307,6 +318,7 @@ export default function Dashboard({ onBackHome }) {
       setLastDecision({ tone: "warning", text: "Transfer rejected and held for review." });
       setStatusMessage(result.message || "Decision recorded by backend. Ledger updated.");
     } catch (error) {
+      console.error("handleReject error:", error);
       setStatusMessage("Could not post rejection to backend.");
     }
   }
