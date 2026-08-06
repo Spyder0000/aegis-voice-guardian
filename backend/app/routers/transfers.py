@@ -5,12 +5,16 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, Field, PositiveFloat
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
+try:
+    from sqlalchemy.exc import SQLAlchemyError
+    from sqlalchemy.orm import Session
+except ImportError:
+    SQLAlchemyError = Exception
+    Session = Any
 
 from ml.trust_score.contract_adapter import score_from_contract
 from ml.trust_score.decision_agent import finalize_decision

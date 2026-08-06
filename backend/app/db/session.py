@@ -5,34 +5,37 @@ from __future__ import annotations
 import os
 from collections.abc import Generator
 
-from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
-from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
+try:
+    from sqlalchemy import create_engine
+    from sqlalchemy.engine import Engine
+    from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
+    class Base(DeclarativeBase):
+        pass
 
-class Base(DeclarativeBase):
-    pass
+    DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
 
+    def _create_engine(database_url: str) -> Engine | None:
+        if not database_url:
+            return None
 
-DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
+        options: dict[str, object] = {"pool_pre_ping": True}
+        if database_url.startswith("sqlite"):
+            options["connect_args"] = {"check_same_thread": False}
+        return create_engine(database_url, **options)
 
-
-def _create_engine(database_url: str) -> Engine | None:
-    if not database_url:
-        return None
-
-    options: dict[str, object] = {"pool_pre_ping": True}
-    if database_url.startswith("sqlite"):
-        options["connect_args"] = {"check_same_thread": False}
-    return create_engine(database_url, **options)
-
-
-engine = _create_engine(DATABASE_URL)
-SessionLocal = (
-    sessionmaker(bind=engine, autocommit=False, autoflush=False, expire_on_commit=False)
-    if engine is not None
-    else None
-)
+    engine = _create_engine(DATABASE_URL)
+    SessionLocal = (
+        sessionmaker(bind=engine, autocommit=False, autoflush=False, expire_on_commit=False)
+        if engine is not None
+        else None
+    )
+except ImportError:
+    from typing import Any
+    Base = None
+    engine = None
+    SessionLocal = None
+    Session = Any
 
 
 def get_db() -> Generator[Session | None, None, None]:

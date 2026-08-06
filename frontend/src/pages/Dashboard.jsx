@@ -171,7 +171,7 @@ export default function Dashboard({ onBackHome }) {
           body: formData,
         });
       } else {
-        response = await fetch(`${API_BASE}/voice/intake`, {
+        response = await fetch(`${API_BASE}/voice/intake/text`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -383,10 +383,10 @@ export default function Dashboard({ onBackHome }) {
             </p>
 
             <div className="analysis-panel">
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <label htmlFor="transcript-input" className="analysis-panel__label">
-                  Voice transcript to analyze
-                </label>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+                <span className="analysis-panel__label" style={{ fontWeight: 600 }}>
+                  Voice Recording Input
+                </span>
 
                 <button
                   type="button"
@@ -405,20 +405,26 @@ export default function Dashboard({ onBackHome }) {
                 </button>
               </div>
 
-              <textarea
-                id="transcript-input"
-                className="analysis-panel__input"
-                rows="4"
-                value={transcriptInput}
-                onChange={(event) => setTranscriptInput(event.target.value)}
-                placeholder="Paste or type a transfer request transcript"
-              />
-
               <VoiceOrb listening={isListening} />
 
-              <div className="hero-actions hero-actions--analysis">
+              <div style={{ marginTop: "1rem" }}>
+                <label htmlFor="transcript-input" className="analysis-panel__label" style={{ display: "block", marginBottom: "0.5rem", fontWeight: 600 }}>
+                  Or type a transaction to test:
+                </label>
+
+                <textarea
+                  id="transcript-input"
+                  className="analysis-panel__input"
+                  rows="4"
+                  value={transcriptInput}
+                  onChange={(event) => setTranscriptInput(event.target.value)}
+                  placeholder="Type a transfer request transcript, e.g. Send 150000 naira..."
+                />
+              </div>
+
+              <div className="hero-actions hero-actions--analysis" style={{ marginTop: "1rem" }}>
                 <button className="primary-button" type="button" onClick={() => analyzeTranscript()} disabled={isAnalyzing}>
-                  {isAnalyzing ? "Analyzing..." : "Analyze with backend"}
+                  {isAnalyzing ? "Analyzing..." : "Analyze"}
                 </button>
                 <button className="secondary-button" type="button" onClick={triggerExampleTransfer} disabled={isAnalyzing}>
                   Load example transfer

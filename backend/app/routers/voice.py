@@ -6,6 +6,7 @@ Contract:
 POST /voice/intake  -> { transcript, amount, recipient, risk_evaluation, risk_level, reasons, action, transaction_id }
 WS /voice/stream    -> Bidirectional WebSocket streaming mic audio in & transcript events out
 """
+import asyncio
 import base64
 import json
 import os
@@ -169,6 +170,17 @@ async def intake_voice(
         transcript_text = "Send 150000 to this new account for the customs officer in the next five minutes"
 
     return _process_transcript(transcript_text)
+
+
+@router.post("/intake/text")
+async def intake_text(request: VoiceIntakeRequest):
+    """
+    Processes typed transcript directly without audio/Sahara ASR.
+    Accepts JSON body: {"transcript": "..."}
+    """
+    if not request or not request.transcript:
+        raise HTTPException(status_code=400, detail="Transcript is required")
+    return _process_transcript(request.transcript)
 
 
 @router.websocket("/stream")

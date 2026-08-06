@@ -6,10 +6,14 @@ from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Any
 
-from sqlalchemy import select
-from sqlalchemy.orm import Session
-
-from app.models import TrustLedger, TrustProfile
+try:
+    from sqlalchemy import select
+    from sqlalchemy.orm import Session
+    from app.models import TrustLedger, TrustProfile
+except ImportError:
+    Session = Any
+    TrustLedger = None
+    TrustProfile = None
 
 
 class LedgerConflictError(ValueError):
