@@ -8,7 +8,8 @@
       "recipient_is_new": true,
       "amount": 5000,
       "avg_transfer_amount": 6000,
-      "hour_of_day": 22
+      "hour_of_day": 22,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -21,7 +22,10 @@
       "recipient_is_new": false,
       "amount": 9000,
       "avg_transfer_amount": 15000,
-      "hour_of_day": 12
+      "hour_of_day": 12,
+      "urgency_phrases": [
+        "blocked SIM"
+      ]
     },
     "is_scam": true
   },
@@ -34,7 +38,8 @@
       "recipient_is_new": false,
       "amount": 3500,
       "avg_transfer_amount": 5000,
-      "hour_of_day": 13
+      "hour_of_day": 13,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -47,7 +52,11 @@
       "recipient_is_new": true,
       "amount": 200000,
       "avg_transfer_amount": 25000,
-      "hour_of_day": 3
+      "hour_of_day": 3,
+      "urgency_phrases": [
+        "emergency",
+        "before they treat him"
+      ]
     },
     "is_scam": true
   },
@@ -60,7 +69,11 @@
       "recipient_is_new": true,
       "amount": 85000,
       "avg_transfer_amount": 12000,
-      "hour_of_day": 15
+      "hour_of_day": 15,
+      "urgency_phrases": [
+        "must",
+        "today"
+      ]
     },
     "is_scam": true
   },
@@ -73,7 +86,10 @@
       "recipient_is_new": false,
       "amount": 120000,
       "avg_transfer_amount": 15000,
-      "hour_of_day": 22
+      "hour_of_day": 22,
+      "urgency_phrases": [
+        "immediately"
+      ]
     },
     "is_scam": true
   },
@@ -86,7 +102,8 @@
       "recipient_is_new": false,
       "amount": 7500,
       "avg_transfer_amount": 8000,
-      "hour_of_day": 15
+      "hour_of_day": 15,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -99,7 +116,8 @@
       "recipient_is_new": false,
       "amount": 20000,
       "avg_transfer_amount": 18000,
-      "hour_of_day": 15
+      "hour_of_day": 15,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -112,7 +130,11 @@
       "recipient_is_new": true,
       "amount": 95000,
       "avg_transfer_amount": 18000,
-      "hour_of_day": 16
+      "hour_of_day": 16,
+      "urgency_phrases": [
+        "in one hour",
+        "police"
+      ]
     },
     "is_scam": true
   },
@@ -125,7 +147,10 @@
       "recipient_is_new": false,
       "amount": 400000,
       "avg_transfer_amount": 35000,
-      "hour_of_day": 2
+      "hour_of_day": 2,
+      "urgency_phrases": [
+        "before the hackers take it"
+      ]
     },
     "is_scam": true
   },
@@ -138,7 +163,8 @@
       "recipient_is_new": true,
       "amount": 40000,
       "avg_transfer_amount": 14000,
-      "hour_of_day": 10
+      "hour_of_day": 10,
+      "urgency_phrases": []
     },
     "is_scam": true
   },
@@ -151,7 +177,11 @@
       "recipient_is_new": true,
       "amount": 35000,
       "avg_transfer_amount": 8000,
-      "hour_of_day": 21
+      "hour_of_day": 21,
+      "urgency_phrases": [
+        "in fifteen minutes",
+        "unless"
+      ]
     },
     "is_scam": true
   },
@@ -164,7 +194,8 @@
       "recipient_is_new": false,
       "amount": 8500,
       "avg_transfer_amount": 8500,
-      "hour_of_day": 14
+      "hour_of_day": 14,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -177,7 +208,10 @@
       "recipient_is_new": true,
       "amount": 65000,
       "avg_transfer_amount": 10000,
-      "hour_of_day": 20
+      "hour_of_day": 20,
+      "urgency_phrases": [
+        "right away"
+      ]
     },
     "is_scam": true
   },
@@ -190,7 +224,10 @@
       "recipient_is_new": true,
       "amount": 70000,
       "avg_transfer_amount": 30000,
-      "hour_of_day": 20
+      "hour_of_day": 20,
+      "urgency_phrases": [
+        "before tomorrow"
+      ]
     },
     "is_scam": false
   },
@@ -203,7 +240,11 @@
       "recipient_is_new": true,
       "amount": 180000,
       "avg_transfer_amount": 45000,
-      "hour_of_day": 1
+      "hour_of_day": 1,
+      "urgency_phrases": [
+        "urgently",
+        "before the morning delivery"
+      ]
     },
     "is_scam": false
   },
@@ -216,7 +257,11 @@
       "recipient_is_new": true,
       "amount": 45000,
       "avg_transfer_amount": 10000,
-      "hour_of_day": 2
+      "hour_of_day": 2,
+      "urgency_phrases": [
+        "immediately",
+        "police"
+      ]
     },
     "is_scam": true
   },
@@ -229,7 +274,8 @@
       "recipient_is_new": false,
       "amount": 15000,
       "avg_transfer_amount": 15000,
-      "hour_of_day": 11
+      "hour_of_day": 11,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -242,7 +288,11 @@
       "recipient_is_new": true,
       "amount": 110000,
       "avg_transfer_amount": 20000,
-      "hour_of_day": 8
+      "hour_of_day": 8,
+      "urgency_phrases": [
+        "now",
+        "deportation"
+      ]
     },
     "is_scam": true
   },
@@ -255,7 +305,11 @@
       "recipient_is_new": false,
       "amount": 30000,
       "avg_transfer_amount": 22000,
-      "hour_of_day": 23
+      "hour_of_day": 23,
+      "urgency_phrases": [
+        "now",
+        "stranded"
+      ]
     },
     "is_scam": false
   },
@@ -268,7 +322,8 @@
       "recipient_is_new": true,
       "amount": 18000,
       "avg_transfer_amount": 15000,
-      "hour_of_day": 17
+      "hour_of_day": 17,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -281,7 +336,8 @@
       "recipient_is_new": false,
       "amount": 10000,
       "avg_transfer_amount": 10000,
-      "hour_of_day": 10
+      "hour_of_day": 10,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -294,7 +350,8 @@
       "recipient_is_new": false,
       "amount": 45000,
       "avg_transfer_amount": 45000,
-      "hour_of_day": 9
+      "hour_of_day": 9,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -307,7 +364,8 @@
       "recipient_is_new": false,
       "amount": 15000,
       "avg_transfer_amount": 12000,
-      "hour_of_day": 8
+      "hour_of_day": 8,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -320,7 +378,11 @@
       "recipient_is_new": true,
       "amount": 150000,
       "avg_transfer_amount": 12000,
-      "hour_of_day": 14
+      "hour_of_day": 14,
+      "urgency_phrases": [
+        "needs it now",
+        "customs officer"
+      ]
     },
     "is_scam": true
   },
@@ -333,7 +395,12 @@
       "recipient_is_new": true,
       "amount": 80000,
       "avg_transfer_amount": 15000,
-      "hour_of_day": 23
+      "hour_of_day": 23,
+      "urgency_phrases": [
+        "urgent",
+        "right away",
+        "account is frozen"
+      ]
     },
     "is_scam": true
   },
@@ -346,7 +413,10 @@
       "recipient_is_new": true,
       "amount": 100000,
       "avg_transfer_amount": 25000,
-      "hour_of_day": 19
+      "hour_of_day": 19,
+      "urgency_phrases": [
+        "right now"
+      ]
     },
     "is_scam": true
   },
@@ -359,7 +429,8 @@
       "recipient_is_new": false,
       "amount": 12000,
       "avg_transfer_amount": 10000,
-      "hour_of_day": 10
+      "hour_of_day": 10,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -372,7 +443,11 @@
       "recipient_is_new": false,
       "amount": 15000,
       "avg_transfer_amount": 18000,
-      "hour_of_day": 16
+      "hour_of_day": 16,
+      "urgency_phrases": [
+        "immediately",
+        "emergency"
+      ]
     },
     "is_scam": true
   },
@@ -385,7 +460,8 @@
       "recipient_is_new": false,
       "amount": 4200,
       "avg_transfer_amount": 5000,
-      "hour_of_day": 10
+      "hour_of_day": 10,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -398,7 +474,8 @@
       "recipient_is_new": false,
       "amount": 60000,
       "avg_transfer_amount": 55000,
-      "hour_of_day": 12
+      "hour_of_day": 12,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -411,7 +488,8 @@
       "recipient_is_new": true,
       "amount": 12000,
       "avg_transfer_amount": 10000,
-      "hour_of_day": 11
+      "hour_of_day": 11,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -424,7 +502,11 @@
       "recipient_is_new": true,
       "amount": 250000,
       "avg_transfer_amount": 20000,
-      "hour_of_day": 13
+      "hour_of_day": 13,
+      "urgency_phrases": [
+        "now",
+        "within ten minutes"
+      ]
     },
     "is_scam": true
   },
@@ -437,7 +519,10 @@
       "recipient_is_new": false,
       "amount": 180000,
       "avg_transfer_amount": 30000,
-      "hour_of_day": 17
+      "hour_of_day": 17,
+      "urgency_phrases": [
+        "urgent"
+      ]
     },
     "is_scam": true
   },
@@ -450,7 +535,10 @@
       "recipient_is_new": true,
       "amount": 25000,
       "avg_transfer_amount": 22000,
-      "hour_of_day": 14
+      "hour_of_day": 14,
+      "urgency_phrases": [
+        "next five minutes"
+      ]
     },
     "is_scam": true
   },
@@ -463,7 +551,8 @@
       "recipient_is_new": false,
       "amount": 10000,
       "avg_transfer_amount": 10000,
-      "hour_of_day": 7
+      "hour_of_day": 7,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -476,7 +565,8 @@
       "recipient_is_new": false,
       "amount": 250000,
       "avg_transfer_amount": 40000,
-      "hour_of_day": 9
+      "hour_of_day": 9,
+      "urgency_phrases": []
     },
     "is_scam": false
   },
@@ -489,7 +579,10 @@
       "recipient_is_new": true,
       "amount": 300000,
       "avg_transfer_amount": 15000,
-      "hour_of_day": 0
+      "hour_of_day": 0,
+      "urgency_phrases": [
+        "before midnight"
+      ]
     },
     "is_scam": true
   },
@@ -502,7 +595,8 @@
       "recipient_is_new": true,
       "amount": 50000,
       "avg_transfer_amount": 12000,
-      "hour_of_day": 11
+      "hour_of_day": 11,
+      "urgency_phrases": []
     },
     "is_scam": true
   },
@@ -515,7 +609,8 @@
       "recipient_is_new": false,
       "amount": 35000,
       "avg_transfer_amount": 30000,
-      "hour_of_day": 18
+      "hour_of_day": 18,
+      "urgency_phrases": []
     },
     "is_scam": false
   }

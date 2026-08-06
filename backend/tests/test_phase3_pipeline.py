@@ -44,15 +44,16 @@ def test_fastapi_intake_endpoint():
     print("[+] FastAPI /voice/intake endpoint test passed!")
 
 def test_fastapi_decision_endpoint():
-    response = client.post("/transfers/decision", json={
+    response = client.post("/trust/decision", json={
         "amount": 2000.0,
         "recipient": "Blessing",
-        "risk_level": "LOW"
+        "risk_level": "LOW",
+        "user_confirmed": True
     })
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "released"
-    print("[+] FastAPI /transfers/decision endpoint test passed!")
+    print("[+] FastAPI /trust/decision endpoint test passed!")
 
 if __name__ == "__main__":
     test_entity_extraction()

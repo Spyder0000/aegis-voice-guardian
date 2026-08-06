@@ -16,7 +16,7 @@ import uuid
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 
 from ml.trust_score.contract_adapter import score_from_contract
@@ -120,6 +120,7 @@ def _process_transcript(transcript: str) -> Dict[str, Any]:
 
 @router.post("/intake")
 async def intake_voice(
+    req: Request,
     request: Optional[VoiceIntakeRequest] = None,
     file: Optional[UploadFile] = File(None),
     transcript: Optional[str] = Form(None),
@@ -129,9 +130,17 @@ async def intake_voice(
     """
     transcript_text = None
 
-    if request and request.transcript:
+    if req.headers.get("content-type") == "application/json":
+        try:
+            body = await req.json()
+            if isinstance(body, dict) and body.get("transcript"):
+                transcript_text = body["transcript"]
+        except Exception:
+            pass
+
+    if not transcript_text and request and request.transcript:
         transcript_text = request.transcript
-    elif transcript:
+    elif not transcript_text and transcript:
         transcript_text = transcript
 
     if file and file.filename:
