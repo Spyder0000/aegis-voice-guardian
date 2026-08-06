@@ -4,6 +4,8 @@
 
 Voice-driven anti-scam guardian for African digital banking. Sahara ASR/TTS listens for authorized-push-payment (APP) scam pressure in a live transfer request, scores it against a Trust Profile, and — if risky — soft-holds the transfer and runs a two-channel confirmation (spoken clarifying question **+** a tactile Visual Confirmation Card) before any money moves.
 
+🎬 **Demo Video**: [https://youtu.be/mCk_SKDc4n0](https://youtu.be/mCk_SKDc4n0)
+
 See `/docs/ARCHITECTURE.md` for the full system diagram and `/docs/ASSIGNMENTS.md` for who owns what and why.
 
 ---

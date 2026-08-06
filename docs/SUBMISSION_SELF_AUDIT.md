@@ -81,7 +81,7 @@
 | Deliverable | Status | File / Location | Notes |
 |---|---|---|---|
 | **Solution Description** | ✅ Ready | [`docs/SOLUTION_DESCRIPTION.md`](file:///mnt/c/Users/USER/Documents/aegis-voice-guardian/docs/SOLUTION_DESCRIPTION.md) | Complete problem, solution, architecture, and inclusion notes |
-| **Demo Video** | ✅ Ready | [https://youtu.be/QzhFSmMbMCM](https://youtu.be/QzhFSmMbMCM) | Complete end-to-end demo video showing voice intake, soft hold, PIN confirmation, and trust ledger |
+| **Demo Video** | ✅ Ready | [https://youtu.be/mCk_SKDc4n0](https://youtu.be/mCk_SKDc4n0) | Complete end-to-end demo video showing voice intake, soft hold, PIN confirmation, and trust ledger |
 | **Docs & Technical Code** | ✅ Ready | Repo root + [`docs/ARCHITECTURE.md`](file:///mnt/c/Users/USER/Documents/aegis-voice-guardian/docs/ARCHITECTURE.md) | Clean codebase with full docs |
 | **Benchmark Report** | ✅ Ready | [`docs/BENCHMARK_REPORT.md`](file:///mnt/c/Users/USER/Documents/aegis-voice-guardian/docs/BENCHMARK_REPORT.md) | Real empirical metrics for Sahara v2 & Whisper |
 | **Ethics & Inclusion Note** | ✅ Ready | [`docs/ETHICS_INCLUSION_NOTE.md`](file:///mnt/c/Users/USER/Documents/aegis-voice-guardian/docs/ETHICS_INCLUSION_NOTE.md) | Safety, privacy, and inclusion principles documented |
